@@ -21,6 +21,6 @@ Git log wrapper with JSON output.
     d : date
     s : subject/title
     f : file list
-    p : parent hash(es)
+    p : list of parent hashes
     t : tree hash
 ```
