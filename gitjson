@@ -2,12 +2,38 @@
 
 # gitjson - git wrapper for JSON output
 #
+# Run "gitjson --help" for usage.
+#
 # Copyright 2014 Paul Rademacher
 # Released under the MIT license
 
 import json
 import subprocess
 import sys
+
+USAGE = """
+ Usage:
+    gitjson [standard git options] <git-command> [--json=<flags>]
+            [standard git command options]
+
+ git-command must be 'log'.
+
+ You can restrict the fields to include in the JSON response with
+ "--json=flags".  The following flags are supported:
+
+    a : author name
+    e : author email
+    h : sha
+    d : date
+    s : subject/title
+    f : file list
+    p : parent hash(es)
+    t : tree hash
+"""
+
+def usage():
+    print USAGE
+
 
 # Remove one or more elements from an list of strings, matching on prefix.
 # strings_to_remove can be a single string or a list of strings.
@@ -43,15 +69,8 @@ def check_flags(incoming_flags, allowed_flags, error_message):
 # Run git log, passing along the original command-line arguments (as 'args').
 def git_log(args, json_flags):
     # If json_flags is not empty string, then the presence of the following characters
-    # determines whether a data field is included in the output:
-    #   a : author name
-    #   e : author email
-    #   h : sha
-    #   d : date
-    #   s : subject/title
-    #   f : file list
-    #   p : parent hash(es)
-    #   t : tree hash
+    # determines whether a data field is included in the output.  See usage() for allowed
+    # flags.
 
     check_flags(json_flags, "aehdsfpt", "Unrecognized flag")
 
@@ -133,6 +152,10 @@ def git_log(args, json_flags):
 
 if __name__ == "__main__":
     args = sys.argv
+
+    if len(sys.argv) > 1 and sys.argv[1] == "--help":
+        usage()
+        sys.exit(0)
 
     # Find the git command name, which is the first argument not prefixed with
     # a dash, and not containing an equal sign.
