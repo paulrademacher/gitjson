@@ -9,8 +9,9 @@ Git log wrapper with JSON output.
             [standard git command options]
 ```
 
- git-command must be 'log'.
+ git-command must be `log` or `shortlog`.
 
+ For `log` command:
  You can restrict the fields to include in the JSON response with
  "--json=flags".  The following flags are supported:
 
